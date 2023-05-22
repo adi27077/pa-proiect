@@ -1,0 +1,46 @@
+Proiect PA -- Sigismund Dijkstra
+
+Instructiuni compilare:
+    - make build pentru compilare
+    - make run pentru rulare bot
+
+Structura proiect:
+    - MyBot.cpp: functiile main si getMove
+    - hlt.hpp: cel din schelet + mai multe functii ajutatoare adaugate, cum ar fi 
+        cea de setare scoruri, cea de verificare ca un site este la margine, etc
+    - networking.hpp: cel din schelet
+
+Abordare algoritmica:
+    - algoritmul este unul de tip greedy care se bazeaza pe atribuirea unor scoruri
+    fiecarui site in functie de putere si productie a.i. scorul este mai mare pentru
+    un site cu putere mica si productie mare
+    - pentru usurinta se retine in fiecare site si locatia acestuia pe harta 
+    - se incepe cu atribuirea de scoruri siteurilor neutre de la merginea regiunii
+    noastre. Formula folosita este site.production * 5 - (site.strength * 7 / 10) + 50
+    Fiecare site este dupa introdus intr-un priority queue ordonat dupa scor descrescator
+    Dupa se trece la atribuirea scorului siteurilor noastre, mergand spre interior.
+    Se extrage un site din priority queue si se viziteaza vecinii acestuia. 
+    Scorul atribuit este cel al casutei sursa - productia - 2. De asemenea, pentru
+    siteurile noastre se salveaza si directia sursa, cea de unde am venit (va fi 
+    folosita de strategia pentru mutari). Casutele atribuite se adauga in priority
+    queue, iar cele de la care pornim se scot din priority queue. Se continua pana
+    cand golim coada (am atribuit un scor si o directie la toate siteurile noastre).
+    - pentrua a crea mutarile, in esenta fiecare site se va deplasa catre directia
+    sursa setata, dupa mai multe conditii. Pentru a permite cresterea puterii siteurilor
+    noastre, le vom lasa sa se mute doar daca acestea au puterea mai mare decat un anumit
+    multiplu al productiei acestora. Daca nu ele vor sta pe loc. De asemenea, ele vor sta
+    pe loc pentru a-si creste puterea pana cand vor ajunge la puterea maxima. Ultima
+    restrictie este ca intotdeauna siteul curent se va muta intr-un site neutru cu 
+    putere mai mica pentru a-l cuceri
+    - complexitatea este O(n^2 + n * log n) datorita parcurgerii matricei si folosirii
+    unui priority queue 
+
+Sursa inspiratie: http://braino.org/thoughts/halite_the_simple_way.html
+
+Responsabilitati membri:
+    - toti membrii au avut responsabilitati aproximativ egale, ideile si codul fiind
+    concepute impreuna
+
+Rulare checker:
+    - am observat o variatie destul de mare la winrateul botului. Scorul minim pe checker
+    a fost 62.25 puncte iar cel maxim 86.25 dupa mai multe rulari.
